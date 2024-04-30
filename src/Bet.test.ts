@@ -156,9 +156,9 @@ describe('Bet', () => {
             const response = await fetch('http://localhost:3000/status/59204');
             const data = await response.json();
 
-            const fixtureID = data.data.fixtureID;
-            const status = data.data.status;
-            const winnerTeamID = data.data.winnerTeamID;
+            const fixtureID = Field(data.data.fixtureID);
+            const status = Field(data.data.status);
+            const winnerTeamID = Field(data.data.winnerTeamID);
             const signature = Signature.fromBase58(data.signature);
 
             const txn = await Mina.transaction(senderAccount, async () => {
