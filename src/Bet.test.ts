@@ -88,6 +88,33 @@ describe('Bet', () => {
             console.log('visitorTeamID: ', fixture.visitorTeamID);
             console.log('startingAt: ', fixture.startingAt);
         });
+
+        it('updates status state if the provided signature from the hard coded value is valid', async () => {
+            await localDeploy();
+
+            const fixtureID = Field(59204);
+            const status = Field(3);
+            const winnerTeamID = Field(1979);
+            const signature = Signature.fromBase58(
+                '7mXMr6d3yTnVc599KRqyUbtWZAXGgvuGBoVNyrBCVzb1xR55MAqoUNc11dG9qi9hJFJ66BEeADq6wAFgobsMfsMw8t93rUea'
+            );
+
+            const txn = await Mina.transaction(senderAccount, async () => {
+                await zkApp.verifyStatus(
+                    fixtureID,
+                    status,
+                    winnerTeamID,
+                    signature
+                );
+            });
+            console.log('proving...');
+            await txn.prove();
+            await txn.sign([senderKey]).send();
+
+            let fixtureStatus = zkApp.fixtureStatus.get();
+            console.log('status: ', fixtureStatus.status);
+            console.log('winnerTeamID: ', fixtureStatus.winnerTeamID);
+        });
     });
 
     describe('actual API requests', () => {
@@ -117,16 +144,38 @@ describe('Bet', () => {
             await txn.sign([senderKey]).send();
 
             let fixture = zkApp.fixture.get();
-            console.log(
-                'fixtureID: ',
-                fixture.fixtureID,
-                'localTeamID: ',
-                fixture.localTeamID,
-                'visitorTeamID: ',
-                fixture.visitorTeamID,
-                'startingAt: ',
-                fixture.startingAt
-            );
+            console.log('fixtureID: ', fixture.fixtureID);
+            console.log('localTeamID: ', fixture.localTeamID);
+            console.log('visitorTeamID: ', fixture.visitorTeamID);
+            console.log('startingAt: ', fixture.startingAt);
+        });
+
+        it('updates status state if the provided signature from the status oracle is valid', async () => {
+            await localDeploy();
+
+            const response = await fetch('http://localhost:3000/status/59204');
+            const data = await response.json();
+
+            const fixtureID = data.data.fixtureID;
+            const status = data.data.status;
+            const winnerTeamID = data.data.winnerTeamID;
+            const signature = Signature.fromBase58(data.signature);
+
+            const txn = await Mina.transaction(senderAccount, async () => {
+                await zkApp.verifyStatus(
+                    fixtureID,
+                    status,
+                    winnerTeamID,
+                    signature
+                );
+            });
+            console.log('proving...');
+            await txn.prove();
+            await txn.sign([senderKey]).send();
+
+            let fixtureStatus = zkApp.fixtureStatus.get();
+            console.log('status: ', fixtureStatus.status);
+            console.log('winnerTeamID: ', fixtureStatus.winnerTeamID);
         });
     });
 });
