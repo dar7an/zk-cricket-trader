@@ -15,9 +15,9 @@ const ORACLE_PUBLIC_KEY =
     'B62qp7eyQ9RKwdYBLWNzxmfKntP6dPDrTSQ1ukyYsV4FoTkJH6sfuPU';
 
 describe('Bet', () => {
-    let deployerAccount: PublicKey,
+    let deployerAccount: Mina.TestPublicKey,
         deployerKey: PrivateKey,
-        senderAccount: PublicKey,
+        senderAccount: Mina.TestPublicKey,
         senderKey: PrivateKey,
         zkAppAddress: PublicKey,
         zkAppPrivateKey: PrivateKey,
@@ -30,15 +30,10 @@ describe('Bet', () => {
     beforeEach(async () => {
         const Local = await Mina.LocalBlockchain({ proofsEnabled });
         Mina.setActiveInstance(Local);
-
-        const { key: deployerKeyLocal } = Local.testAccounts[0];
-        deployerKey = deployerKeyLocal;
-        deployerAccount = deployerKey.toPublicKey();
-
-        const { key: senderKeyLocal } = Local.testAccounts[1];
-        senderKey = senderKeyLocal;
-        senderAccount = deployerKey.toPublicKey();
-
+        deployerAccount = Local.testAccounts[0];
+        deployerKey = deployerAccount.key;
+        senderAccount = Local.testAccounts[1];
+        senderKey = senderAccount.key;
         zkAppPrivateKey = PrivateKey.random();
         zkAppAddress = zkAppPrivateKey.toPublicKey();
         zkApp = new Bet(zkAppAddress);
@@ -92,49 +87,46 @@ describe('Bet', () => {
             console.log('localTeamID: ', fixture.localTeamID);
             console.log('visitorTeamID: ', fixture.visitorTeamID);
             console.log('startingAt: ', fixture.startingAt);
-            console.log('signature: ', signature);
         });
     });
 
-    // describe('actual API requests', () => {
-    //     it('updates fixture state if the provided signature from the fixture oracle is valid', async () => {
-    //         await localDeploy();
+    describe('actual API requests', () => {
+        it('updates fixture state if the provided signature from the fixture oracle is valid', async () => {
+            await localDeploy();
 
-    //         const response = await fetch(
-    //             'https://sportmonksoracle.vercel.app/fixture'
-    //         );
-    //         const data = await response.json();
+            const response = await fetch('http://localhost:3000/fixture');
+            const data = await response.json();
 
-    //         const fixtureID = Field(data.data.fixtureID);
-    //         const localTeamID = Field(data.data.localTeamID);
-    //         const visitorTeamID = Field(data.data.visitorTeamID);
-    //         const startingAt = Field(data.data.startingAt);
-    //         const signature = Signature.fromBase58(data.signature);
+            const fixtureID = Field(data.data.fixtureID);
+            const localTeamID = Field(data.data.localTeamID);
+            const visitorTeamID = Field(data.data.visitorTeamID);
+            const startingAt = Field(data.data.startingAt);
+            const signature = Signature.fromBase58(data.signature);
 
-    //         const txn = await Mina.transaction(senderAccount, async () => {
-    //             await zkApp.verifyFixture(
-    //                 fixtureID,
-    //                 localTeamID,
-    //                 visitorTeamID,
-    //                 startingAt,
-    //                 signature
-    //             );
-    //         });
-    //         console.log('proving...');
-    //         await txn.prove();
-    //         await txn.sign([senderKey]).send();
+            const txn = await Mina.transaction(senderAccount, async () => {
+                await zkApp.verifyFixture(
+                    fixtureID,
+                    localTeamID,
+                    visitorTeamID,
+                    startingAt,
+                    signature
+                );
+            });
+            console.log('proving...');
+            await txn.prove();
+            await txn.sign([senderKey]).send();
 
-    //         let fixture = zkApp.fixture.get();
-    //         console.log(
-    //             'fixtureID: ',
-    //             fixture.fixtureID,
-    //             'localTeamID: ',
-    //             fixture.localTeamID,
-    //             'visitorTeamID: ',
-    //             fixture.visitorTeamID,
-    //             'startingAt: ',
-    //             fixture.startingAt
-    //         );
-    //     });
-    // });
+            let fixture = zkApp.fixture.get();
+            console.log(
+                'fixtureID: ',
+                fixture.fixtureID,
+                'localTeamID: ',
+                fixture.localTeamID,
+                'visitorTeamID: ',
+                fixture.visitorTeamID,
+                'startingAt: ',
+                fixture.startingAt
+            );
+        });
+    });
 });
