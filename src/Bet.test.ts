@@ -61,12 +61,13 @@ describe('Bet', () => {
         it('updates fixture state if the provided signature from the hard coded value is valid', async () => {
             await localDeploy();
 
-            const fixtureID = Field(59204);
-            const localTeamID = Field(1979);
-            const visitorTeamID = Field(6);
-            const startingAt = Field(1714485600000);
+            // Update these values with values from the oracle's fixture endpoint
+            const fixtureID = Field(59210);
+            const localTeamID = Field(9);
+            const visitorTeamID = Field(7);
+            const startingAt = Field(1714658400000);
             const signature = Signature.fromBase58(
-                '7mXMzuMHbUC7T42Kgf7tkdZBE2G5ZjP27m2nJxTmscPBxtQnEmRTCFN5aEKRqgeVgeMjkcYyU61D1K3KAB9m1Wocx7dx49fr'
+                '7mXAW5ZzTdo2JtncujgKcwiCbH19cDF6jiwGT9Re8FuV43ddgm24EgXNJaZ1czNPmoZLz2x2C5XpjFSSAWsxCeKKjJQpnJA3'
             );
 
             const txn = await Mina.transaction(senderAccount, async () => {
@@ -92,11 +93,12 @@ describe('Bet', () => {
         it('updates status state if the provided signature from the hard coded value is valid', async () => {
             await localDeploy();
 
-            const fixtureID = Field(59204);
-            const status = Field(3);
-            const winnerTeamID = Field(1979);
+            // Update these values with values from the oracle's status endpoint
+            const fixtureID = Field(59210);
+            const status = Field(1);
+            const winnerTeamID = Field(0);
             const signature = Signature.fromBase58(
-                '7mXMr6d3yTnVc599KRqyUbtWZAXGgvuGBoVNyrBCVzb1xR55MAqoUNc11dG9qi9hJFJ66BEeADq6wAFgobsMfsMw8t93rUea'
+                '7mX3VhAxWpGUNzNtRArqQ3UaHvQec98RTrdN2yEFiPbCGDJsxbBrxrFxY7siYotRmuUDovoxYBipQfayDT7njLJNzh1Xsmnf'
             );
 
             const txn = await Mina.transaction(senderAccount, async () => {
