@@ -49,6 +49,7 @@ describe('Bet', () => {
         await txn.sign([deployerKey, zkAppPrivateKey]).send();
     }
 
+    // Test 1: Basic test to check if the contract is deployed
     it('generates and deploys the `Bet` smart contract', async () => {
         await localDeploy();
         const oraclePublicKey = zkApp.oraclePublicKey.get();
@@ -58,6 +59,7 @@ describe('Bet', () => {
     });
 
     describe('hardcoded values', () => {
+        // Test 2: Verify the fixture state with hardcoded values
         it('updates fixture state if the provided signature from the hard coded value is valid', async () => {
             await localDeploy();
 
@@ -90,6 +92,7 @@ describe('Bet', () => {
             console.log('startingAt: ', fixture.startingAt);
         });
 
+        // Test 3: Verify the status state with hardcoded values
         it('updates status state if the provided signature from the hard coded value is valid', async () => {
             await localDeploy();
 
@@ -120,6 +123,7 @@ describe('Bet', () => {
     });
 
     describe('actual API requests', () => {
+        // Test 4: Verify the fixture state with actual API requests
         it('updates fixture state if the provided signature from the fixture oracle is valid', async () => {
             await localDeploy();
 
@@ -152,6 +156,7 @@ describe('Bet', () => {
             console.log('startingAt: ', fixture.startingAt);
         });
 
+        // Test 5: Verify the status state with actual API requests
         it('updates status state if the provided signature from the status oracle is valid', async () => {
             await localDeploy();
 
