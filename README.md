@@ -37,11 +37,9 @@ npm run coverage
 
 ### Hardcoded Input
 
-1. Run the oracle server locally
+Run the oracle server locally and hardcode the output for Tests 2 and 3 and update the URL of the local server for tests 4 and 5.
 
-2. Hardcode the output for Tests 2 and 3 and update the URL of the local server
-
-For example, here the output for http://localhost:3000/fixture:
+For example, response for http://localhost:3000/fixture:
 
 ```
 {
@@ -77,7 +75,11 @@ const fixtureID = Field(59213);
             );
 ```
 
-Here's the output for http://localhost:3000/status/59213
+```
+const response = await fetch('http://localhost:3000/fixture');
+```
+
+For example, response for http://localhost:3000/status/59213
 
 ```
 {
