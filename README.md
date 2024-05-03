@@ -7,31 +7,12 @@ The smart contract uses 8 state variables which is the maximum limit of a Mina z
 1. Use of off-chain storage like a Merkle Tree to store user's bet information
 2. Interacting with another zkApp which handles user betting
 
-## Setup
+## Prerequisites
 
-1. For testing the application, run the following oracle locally:
+1. For testing the application, you must run the following oracle locally:
    [`sportsmonksoracle`](https://github.com/dar7an/sportmonksoracle)
 
-2. Change hardcoded values for tests 2 and 3 with values from the oracle.
-
-## Build
-
-```sh
-npm run build
-```
-
-## Run Tests
-
-```sh
-npm run test
-npm run testw # watch mode
-```
-
-## How to run coverage
-
-```sh
-npm run coverage
-```
+2. Hardcode values for the tests.
 
 ## Sample Run
 
@@ -117,10 +98,6 @@ const response2 = await fetch('http://localhost:3000/status/59213');
 ```
 
 ### Output
-
-```
-npm run test
-```
 
 ```
   console.log
@@ -268,6 +245,25 @@ Tests:       5 passed, 5 total
 Snapshots:   0 total
 Time:        6.243 s, estimated 7 s
 Ran all test suites.
+```
+
+## Build
+
+```sh
+npm run build
+```
+
+## Run Tests
+
+```sh
+npm run test
+npm run testw # watch mode
+```
+
+## How to run coverage
+
+```sh
+npm run coverage
 ```
 
 ## License
