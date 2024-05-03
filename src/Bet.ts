@@ -91,9 +91,9 @@ export class Bet extends SmartContract {
         validSignature.assertTrue();
 
         // Check that the fixture ID matches the stored fixture ID
-        // const fixture = this.fixture.get();
-        // this.fixture.requireEquals(fixture);
-        // fixtureID.assertEquals(this.fixture.get().fixtureID);
+        const fixture = this.fixture.get();
+        this.fixture.requireEquals(fixture);
+        fixtureID.assertEquals(this.fixture.get().fixtureID);
 
         // Change state to store the fixture status
         this.fixtureStatus.set(new FixtureStatus({ status, winnerTeamID }));

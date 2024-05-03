@@ -1,4 +1,4 @@
-# Mina zkApp: Zkiplbets
+# Mina zkApp: zkiplbets
 
 Currently, the application stores the next fixture's data and updates its status from an oracle.
 
@@ -35,122 +35,236 @@ npm run coverage
 
 ## Sample Run
 
-### Input
+### Hardcoded Input
 
-#### Fixture
+1. Run the oracle server locally
 
-This is the only endpoint which will constrantly change.
+2. Hardcode the output for Tests 2 and 3 and update the URL of the local server
+
+For example, here the output for http://localhost:3000/fixture:
 
 ```
-const fixtureID = Field(59210);
-    const localTeamID = Field(9);
-    const visitorTeamID = Field(7);
-    const startingAt = Field(1714658400000);
-    const signature = Signature.fromBase58(
-        '7mXAW5ZzTdo2JtncujgKcwiCbH19cDF6jiwGT9Re8FuV43ddgm24EgXNJaZ1czNPmoZLz2x2C5XpjFSSAWsxCeKKjJQpnJA3'
-    );
+{
+  "data": {
+    "fixtureID": 59213,
+    "localTeamID": 6,
+    "visitorTeamID": 5,
+    "startingAt": 1714744800000,
+    "timestamp": 1714698664432
+  },
+  "signature": "7mXEX49AzUUBfARt6XXK1yAaPA2TprEhh3C3C7pLNULL8ifiH7arjUNAJYUNX7qgEEGLKdBxqayg51FzgaTUEYL3kzfFbg6j",
+  "publicKey": "B62qp7eyQ9RKwdYBLWNzxmfKntP6dPDrTSQ1ukyYsV4FoTkJH6sfuPU"
+}
+```
+
+| Variable      | Value                                                                                            |
+| :------------ | :----------------------------------------------------------------------------------------------- |
+| fixtureID     | 59213                                                                                            |
+| localTeamID   | 6                                                                                                |
+| visitorTeamID | 5                                                                                                |
+| startingAt    | 1714744800000                                                                                    |
+| signature     | 7mXEX49AzUUBfARt6XXK1yAaPA2TprEhh3C3C7pLNULL8ifiH7arjUNAJYUNX7qgEEGLKdBxqayg51FzgaTUEYL3kzfFbg6j |
+
+Update the revelant variables:
+
+```
+const fixtureID = Field(59213);
+            const localTeamID = Field(6);
+            const visitorTeamID = Field(5);
+            const startingAt = Field(1714744800000);
+            const signature = Signature.fromBase58(
+                '7mXEX49AzUUBfARt6XXK1yAaPA2TprEhh3C3C7pLNULL8ifiH7arjUNAJYUNX7qgEEGLKdBxqayg51FzgaTUEYL3kzfFbg6j'
+            );
+```
+
+Here's the output for http://localhost:3000/status/59213
+
+```
+{
+  "data": {
+    "fixtureID": 59213,
+    "status": 1,
+    "winnerTeamID": 0,
+    "timestamp": 1714699981382
+  },
+  "signature": "7mXHh41LMHw4TvX62BiPzGiyWc8TDL3kGCA5MThNTkmcvBU9e7Du29t1HrD1FUMPkFDbYSKmmUwbjgMjz4z2wJrd41xC1dCj",
+  "publicKey": "B62qp7eyQ9RKwdYBLWNzxmfKntP6dPDrTSQ1ukyYsV4FoTkJH6sfuPU"
+}
+```
+
+| Variable     | Value                                                                                            |
+| :----------- | :----------------------------------------------------------------------------------------------- |
+| fixtureID    | 59213                                                                                            |
+| status       | 1                                                                                                |
+| winnerTeamID | 0                                                                                                |
+| signature    | 7mXHh41LMHw4TvX62BiPzGiyWc8TDL3kGCA5MThNTkmcvBU9e7Du29t1HrD1FUMPkFDbYSKmmUwbjgMjz4z2wJrd41xC1dCj |
+
+Update the revelant variables:
+
+```
+const fixtureID2 = Field(59213);
+            const status = Field(1);
+            const winnerTeamID = Field(0);
+            const signature2 = Signature.fromBase58(
+                '7mXHh41LMHw4TvX62BiPzGiyWc8TDL3kGCA5MThNTkmcvBU9e7Du29t1HrD1FUMPkFDbYSKmmUwbjgMjz4z2wJrd41xC1dCj'
+            );
+```
+
+```
+const response2 = await fetch('http://localhost:3000/status/59213');
 ```
 
 ### Output
 
 ```
-> zkiplbets@0.1.0 test
-> node --experimental-vm-modules node_modules/jest/bin/jest.js
+npm run test
+```
 
+```
   console.log
     proving...
 
-      at Object.<anonymous> (src/Bet.test.ts:81:21)
+      at Object.<anonymous> (src/Bet.test.ts:84:21)
 
   console.log
-    fixtureID:  Field { value: [ 0, [ 0, 59210n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:86:21)
-
-  console.log
-    localTeamID:  Field { value: [ 0, [ 0, 9n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:87:21)
-
-  console.log
-    visitorTeamID:  Field { value: [ 0, [ 0, 7n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:88:21)
-
-  console.log
-    startingAt:  Field { value: [ 0, [ 0, 1714658400000n ] ] }
+    fixtureID:  Field { value: [ 0, [ 0, 59213n ] ] }
 
       at Object.<anonymous> (src/Bet.test.ts:89:21)
 
   console.log
+    localTeamID:  Field { value: [ 0, [ 0, 6n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:90:21)
+
+  console.log
+    visitorTeamID:  Field { value: [ 0, [ 0, 5n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:91:21)
+
+  console.log
+    startingAt:  Field { value: [ 0, [ 0, 1714744800000n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:92:21)
+
+  console.log
     proving...
 
-      at Object.<anonymous> (src/Bet.test.ts:110:21)
+      at Object.<anonymous> (src/Bet.test.ts:117:21)
+
+  console.log
+    fixtureID:  Field { value: [ 0, [ 0, 59213n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:122:21)
+
+  console.log
+    localTeamID:  Field { value: [ 0, [ 0, 6n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:123:21)
+
+  console.log
+    visitorTeamID:  Field { value: [ 0, [ 0, 5n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:124:21)
+
+  console.log
+    startingAt:  Field { value: [ 0, [ 0, 1714744800000n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:125:21)
+
+  console.log
+    proving...
+
+      at Object.<anonymous> (src/Bet.test.ts:143:21)
 
   console.log
     status:  Field { value: [ 0, [ 0, 1n ] ] }
 
-      at Object.<anonymous> (src/Bet.test.ts:115:21)
+      at Object.<anonymous> (src/Bet.test.ts:148:21)
 
   console.log
     winnerTeamID:  Field { value: [ 0, [ 0, 0n ] ] }
 
-      at Object.<anonymous> (src/Bet.test.ts:116:21)
-
-  console.log
-    proving...
-
-      at Object.<anonymous> (src/Bet.test.ts:142:21)
-
-  console.log
-    fixtureID:  Field { value: [ 0, [ 0, 59210n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:147:21)
-
-  console.log
-    localTeamID:  Field { value: [ 0, [ 0, 9n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:148:21)
-
-  console.log
-    visitorTeamID:  Field { value: [ 0, [ 0, 7n ] ] }
-
       at Object.<anonymous> (src/Bet.test.ts:149:21)
 
   console.log
-    startingAt:  Field { value: [ 0, [ 0, 1714658400000n ] ] }
+    proving...
 
-      at Object.<anonymous> (src/Bet.test.ts:150:21)
+      at Object.<anonymous> (src/Bet.test.ts:176:21)
+
+  console.log
+    fixtureID:  Field { value: [ 0, [ 0, 59213n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:181:21)
+
+  console.log
+    localTeamID:  Field { value: [ 0, [ 0, 6n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:182:21)
+
+  console.log
+    visitorTeamID:  Field { value: [ 0, [ 0, 5n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:183:21)
+
+  console.log
+    startingAt:  Field { value: [ 0, [ 0, 1714744800000n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:184:21)
 
   console.log
     proving...
 
-      at Object.<anonymous> (src/Bet.test.ts:172:21)
+      at Object.<anonymous> (src/Bet.test.ts:209:21)
 
   console.log
-    status:  Field { value: [ 0, [ 0, 3n ] ] }
+    fixtureID:  Field { value: [ 0, [ 0, 59213n ] ] }
 
-      at Object.<anonymous> (src/Bet.test.ts:177:21)
+      at Object.<anonymous> (src/Bet.test.ts:214:21)
 
   console.log
-    winnerTeamID:  Field { value: [ 0, [ 0, 1979n ] ] }
+    localTeamID:  Field { value: [ 0, [ 0, 6n ] ] }
 
-      at Object.<anonymous> (src/Bet.test.ts:178:21)
+      at Object.<anonymous> (src/Bet.test.ts:215:21)
 
- PASS  src/Bet.test.ts (5.89 s)
+  console.log
+    visitorTeamID:  Field { value: [ 0, [ 0, 5n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:216:21)
+
+  console.log
+    startingAt:  Field { value: [ 0, [ 0, 1714744800000n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:217:21)
+
+  console.log
+    proving...
+
+      at Object.<anonymous> (src/Bet.test.ts:235:21)
+
+  console.log
+    status:  Field { value: [ 0, [ 0, 1n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:240:21)
+
+  console.log
+    winnerTeamID:  Field { value: [ 0, [ 0, 0n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:241:21)
+
+ PASS  src/Bet.test.ts (6.207 s)
   Bet
-    ✓ generates and deploys the `Bet` smart contract (757 ms)
+    ✓ generates and deploys the `Bet` smart contract (753 ms)
     hardcoded values
-      ✓ updates fixture state if the provided signature from the hard coded value is valid (1468 ms)
-      ✓ updates status state if the provided signature from the hard coded value is valid (468 ms)
+      ✓ updates fixture state if the provided signature from the hard coded value is valid (1446 ms)
+      ✓ updates status state if the provided signature from the hard coded value is valid (722 ms)
     actual API requests
-      ✓ updates fixture state if the provided signature from the fixture oracle is valid (1164 ms)
-      ✓ updates status state if the provided signature from the status oracle is valid (622 ms)
+      ✓ updates fixture state if the provided signature from the fixture oracle is valid (1060 ms)
+      ✓ updates status state if the provided signature from the status oracle is valid (1084 ms)
 
 Test Suites: 1 passed, 1 total
 Tests:       5 passed, 5 total
 Snapshots:   0 total
-Time:        5.943 s
+Time:        6.243 s, estimated 7 s
 Ran all test suites.
 ```
 

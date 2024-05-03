@@ -64,12 +64,12 @@ describe('Bet', () => {
             await localDeploy();
 
             // Update these values with values from the oracle's fixture endpoint
-            const fixtureID = Field(59210);
-            const localTeamID = Field(9);
-            const visitorTeamID = Field(7);
-            const startingAt = Field(1714658400000);
+            const fixtureID = Field(59213);
+            const localTeamID = Field(6);
+            const visitorTeamID = Field(5);
+            const startingAt = Field(1714744800000);
             const signature = Signature.fromBase58(
-                '7mXAW5ZzTdo2JtncujgKcwiCbH19cDF6jiwGT9Re8FuV43ddgm24EgXNJaZ1czNPmoZLz2x2C5XpjFSSAWsxCeKKjJQpnJA3'
+                '7mXEX49AzUUBfARt6XXK1yAaPA2TprEhh3C3C7pLNULL8ifiH7arjUNAJYUNX7qgEEGLKdBxqayg51FzgaTUEYL3kzfFbg6j'
             );
 
             const txn = await Mina.transaction(senderAccount, async () => {
@@ -96,25 +96,53 @@ describe('Bet', () => {
         it('updates status state if the provided signature from the hard coded value is valid', async () => {
             await localDeploy();
 
-            // Update these values with values from the oracle's status endpoint
-            const fixtureID = Field(59210);
-            const status = Field(1);
-            const winnerTeamID = Field(0);
+            // Update these values with values from the oracle's fixture endpoint
+            const fixtureID = Field(59213);
+            const localTeamID = Field(6);
+            const visitorTeamID = Field(5);
+            const startingAt = Field(1714744800000);
             const signature = Signature.fromBase58(
-                '7mX3VhAxWpGUNzNtRArqQ3UaHvQec98RTrdN2yEFiPbCGDJsxbBrxrFxY7siYotRmuUDovoxYBipQfayDT7njLJNzh1Xsmnf'
+                '7mXEX49AzUUBfARt6XXK1yAaPA2TprEhh3C3C7pLNULL8ifiH7arjUNAJYUNX7qgEEGLKdBxqayg51FzgaTUEYL3kzfFbg6j'
             );
 
             const txn = await Mina.transaction(senderAccount, async () => {
-                await zkApp.verifyStatus(
+                await zkApp.verifyFixture(
                     fixtureID,
-                    status,
-                    winnerTeamID,
+                    localTeamID,
+                    visitorTeamID,
+                    startingAt,
                     signature
                 );
             });
             console.log('proving...');
             await txn.prove();
             await txn.sign([senderKey]).send();
+
+            let fixture = zkApp.fixture.get();
+            console.log('fixtureID: ', fixture.fixtureID);
+            console.log('localTeamID: ', fixture.localTeamID);
+            console.log('visitorTeamID: ', fixture.visitorTeamID);
+            console.log('startingAt: ', fixture.startingAt);
+
+            // Update these values with values from the oracle's status endpoint
+            const fixtureID2 = Field(59213);
+            const status = Field(1);
+            const winnerTeamID = Field(0);
+            const signature2 = Signature.fromBase58(
+                '7mXHh41LMHw4TvX62BiPzGiyWc8TDL3kGCA5MThNTkmcvBU9e7Du29t1HrD1FUMPkFDbYSKmmUwbjgMjz4z2wJrd41xC1dCj'
+            );
+
+            const txn2 = await Mina.transaction(senderAccount, async () => {
+                await zkApp.verifyStatus(
+                    fixtureID2,
+                    status,
+                    winnerTeamID,
+                    signature2
+                );
+            });
+            console.log('proving...');
+            await txn2.prove();
+            await txn2.sign([senderKey]).send();
 
             let fixtureStatus = zkApp.fixtureStatus.get();
             console.log('status: ', fixtureStatus.status);
@@ -160,25 +188,54 @@ describe('Bet', () => {
         it('updates status state if the provided signature from the status oracle is valid', async () => {
             await localDeploy();
 
-            const response = await fetch('http://localhost:3000/status/59204');
+            const response = await fetch('http://localhost:3000/fixture');
             const data = await response.json();
 
             const fixtureID = Field(data.data.fixtureID);
-            const status = Field(data.data.status);
-            const winnerTeamID = Field(data.data.winnerTeamID);
+            const localTeamID = Field(data.data.localTeamID);
+            const visitorTeamID = Field(data.data.visitorTeamID);
+            const startingAt = Field(data.data.startingAt);
             const signature = Signature.fromBase58(data.signature);
 
             const txn = await Mina.transaction(senderAccount, async () => {
-                await zkApp.verifyStatus(
+                await zkApp.verifyFixture(
                     fixtureID,
-                    status,
-                    winnerTeamID,
+                    localTeamID,
+                    visitorTeamID,
+                    startingAt,
                     signature
                 );
             });
             console.log('proving...');
             await txn.prove();
             await txn.sign([senderKey]).send();
+
+            let fixture = zkApp.fixture.get();
+            console.log('fixtureID: ', fixture.fixtureID);
+            console.log('localTeamID: ', fixture.localTeamID);
+            console.log('visitorTeamID: ', fixture.visitorTeamID);
+            console.log('startingAt: ', fixture.startingAt);
+
+            // Change this value to the fixture ID from the oracle's status endpoint
+            const response2 = await fetch('http://localhost:3000/status/59213');
+            const data2 = await response2.json();
+
+            const fixtureID2 = Field(data2.data.fixtureID);
+            const status = Field(data2.data.status);
+            const winnerTeamID = Field(data2.data.winnerTeamID);
+            const signature2 = Signature.fromBase58(data2.signature);
+
+            const txn2 = await Mina.transaction(senderAccount, async () => {
+                await zkApp.verifyStatus(
+                    fixtureID2,
+                    status,
+                    winnerTeamID,
+                    signature2
+                );
+            });
+            console.log('proving...');
+            await txn2.prove();
+            await txn2.sign([senderKey]).send();
 
             let fixtureStatus = zkApp.fixtureStatus.get();
             console.log('status: ', fixtureStatus.status);
