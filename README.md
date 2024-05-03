@@ -35,7 +35,7 @@ npm run coverage
 
 ## Sample Run
 
-### Hardcoded Input
+### Input
 
 Run the oracle server locally and hardcode the output for Tests 2 and 3 and update the URL of the local server for tests 4 and 5.
 
