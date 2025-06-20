@@ -109,6 +109,66 @@
             height: fit-content;
         }
 
+        /* Welcome State */
+        .welcome-card {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            padding: 48px 32px;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .welcome-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .welcome-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .welcome-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .feature-item {
+            text-align: center;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: #eff6ff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 20px;
+        }
+
+        .feature-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .feature-description {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
         /* Match Card */
         .match-header {
             padding: 24px;
@@ -321,36 +381,43 @@
             cursor: not-allowed;
         }
 
-        /* Status Messages */
+                 /* Status Messages */
         .status {
-            padding: 12px 16px;
-            border-radius: 6px;
-            margin: 16px 0;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
             font-size: 14px;
             font-weight: 500;
+            border-left: 4px solid;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .status.loading {
-            background: #fef3c7;
+            background: #fffbeb;
             color: #92400e;
+            border-left-color: #f59e0b;
             border: 1px solid #fde68a;
         }
 
         .status.success {
-            background: #d1fae5;
-            color: #065f46;
-            border: 1px solid #a7f3d0;
+            background: #f0fdf4;
+            color: #166534;
+            border-left-color: #22c55e;
+            border: 1px solid #bbf7d0;
         }
 
         .status.error {
-            background: #fee2e2;
-            color: #991b1b;
+            background: #fef2f2;
+            color: #dc2626;
+            border-left-color: #ef4444;
             border: 1px solid #fecaca;
         }
 
         .status.info {
-            background: #dbeafe;
+            background: #f0f9ff;
             color: #1e40af;
+            border-left-color: #3b82f6;
             border: 1px solid #bfdbfe;
         }
 
@@ -425,14 +492,15 @@
     </div>
 
     <div class="container">
-        <div class="main-content">
+        <!-- Welcome State -->
+        <div id="welcomeState" class="main-content">
             <div class="left-panel">
                 <div class="match-header">
                     <h2 class="match-title">Upcoming Match</h2>
-                    <p class="match-subtitle">International Cricket • T20 Format</p>
+                    <p class="match-subtitle">International T20 Cricket</p>
                 </div>
 
-                <div id="matchInfo" class="teams-container hidden">
+                <div id="matchInfo" class="teams-container">
                     <div class="teams">
                         <div class="team">
                             <div id="localTeamName" class="team-name">Loading...</div>
@@ -458,13 +526,9 @@
                                 <span class="detail-label">Status</span>
                                 <span id="matchStatus" class="detail-value">Upcoming</span>
                             </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Start Time</span>
+                            <div class="detail-item" style="grid-column: 1 / -1;">
+                                <span class="detail-label">Match Time</span>
                                 <span id="startTime" class="detail-value">-</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Format</span>
-                                <span class="detail-value">T20 International</span>
                             </div>
                         </div>
                     </div>
@@ -472,7 +536,80 @@
             </div>
 
             <div class="right-panel">
-                <div id="bettingSection" class="betting-panel hidden">
+                <div class="betting-panel">
+                    <h3 class="betting-title">Place Your Bet</h3>
+                    <p style="color: #6b7280; font-size: 14px; margin-bottom: 20px;">
+                        Connect your wallet to start betting on this match
+                    </p>
+                    
+                    <div class="welcome-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">🔒</div>
+                            <div class="feature-title">Transparent</div>
+                            <div class="feature-description">All bets are verifiable on-chain</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">⚡</div>
+                            <div class="feature-title">Fast</div>
+                            <div class="feature-description">Lightning-fast bet placement</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🌐</div>
+                            <div class="feature-title">Decentralized</div>
+                            <div class="feature-description">No central authority needed</div>
+                        </div>
+                    </div>
+
+                    <div id="status" class="status hidden"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Match and Betting State -->
+        <div id="matchState" class="main-content hidden">
+            <div class="left-panel">
+                <div class="match-header">
+                    <h2 class="match-title">Upcoming Match</h2>
+                    <p class="match-subtitle">International T20 Cricket</p>
+                </div>
+
+                <div class="teams-container">
+                    <div class="teams">
+                        <div class="team">
+                            <div id="localTeamName2" class="team-name">Loading...</div>
+                            <div id="localTeamCode2" class="team-code"></div>
+                        </div>
+                        <div class="vs-divider">
+                            <span class="vs-text">VS</span>
+                            <div class="vs-line"></div>
+                        </div>
+                        <div class="team">
+                            <div id="visitorTeamName2" class="team-name">Loading...</div>
+                            <div id="visitorTeamCode2" class="team-code"></div>
+                        </div>
+                    </div>
+
+                    <div class="match-details">
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">Match ID</span>
+                                <span id="fixtureId2" class="detail-value">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Status</span>
+                                <span id="matchStatus2" class="detail-value">Upcoming</span>
+                            </div>
+                            <div class="detail-item" style="grid-column: 1 / -1;">
+                                <span class="detail-label">Match Time</span>
+                                <span id="startTime2" class="detail-value">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div id="bettingSection" class="betting-panel">
                     <h3 class="betting-title">Place Your Bet</h3>
                     
                     <div class="bet-options">
@@ -510,8 +647,6 @@
                         Place Bet
                     </button>
                 </div>
-
-                <div id="status" class="status hidden"></div>
             </div>
         </div>
 
@@ -534,6 +669,8 @@
 
         // DOM elements
         const connectWalletBtn = document.getElementById('connectWallet');
+        const welcomeState = document.getElementById('welcomeState');
+        const matchState = document.getElementById('matchState');
         const matchInfo = document.getElementById('matchInfo');
         const bettingSection = document.getElementById('bettingSection');
         const status = document.getElementById('status');
@@ -545,6 +682,29 @@
         // Initialize app
         async function init() {
             showStatus('Welcome to Cricket Trader! Connect your wallet to start betting.', 'info');
+            // Load match data immediately on page load
+            await loadMatchData();
+        }
+
+        // Format date to human-friendly format
+        function formatMatchTime(dateString) {
+            const date = new Date(dateString);
+            const dateOptions = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
+            const timeOptions = {
+                hour: '2-digit',
+                minute: '2-digit',
+                timeZoneName: 'short'
+            };
+            
+            const dateStr = date.toLocaleDateString('en-US', dateOptions);
+            const timeStr = date.toLocaleTimeString('en-US', timeOptions);
+            
+            return `${dateStr}<br/>${timeStr}`;
         }
 
         // Connect wallet (simplified - would integrate with Auro wallet)
@@ -559,8 +719,21 @@
                 connectWalletBtn.textContent = 'Wallet Connected ✓';
                 connectWalletBtn.disabled = true;
                 
-                showStatus('Wallet connected! Loading match data...', 'success');
-                await loadMatchData();
+                // Switch to betting view
+                welcomeState.classList.add('hidden');
+                matchState.classList.remove('hidden');
+                
+                showStatus('Wallet connected! You can now place bets.', 'success');
+                
+                // Enable betting controls
+                placeBetBtn.disabled = false;
+                betAmount.disabled = false;
+                betLocalBtn.disabled = false;
+                betVisitorBtn.disabled = false;
+                
+                setTimeout(() => {
+                    status.classList.add('hidden');
+                }, 2000);
                 
             } catch (error) {
                 showStatus('Failed to connect wallet. Please try again.', 'error');
@@ -575,9 +748,16 @@
                 
                 currentFixture = data.data;
                 displayMatchInfo(currentFixture);
-                showBettingOptions();
                 
-                showStatus('Match loaded! Select a team and enter your bet amount.', 'info');
+                // Only show betting options if wallet is connected
+                if (walletConnected) {
+                    showBettingOptions();
+                }
+                
+                // Clear status after successful load
+                setTimeout(() => {
+                    status.classList.add('hidden');
+                }, 2000);
                 
             } catch (error) {
                 showStatus('Failed to load match data. Please refresh and try again.', 'error');
@@ -586,26 +766,29 @@
 
         // Display match information
         function displayMatchInfo(fixture) {
+            // Update welcome state (visible initially)
             document.getElementById('localTeamName').textContent = fixture.localteam_name || 'Team 1';
             document.getElementById('localTeamCode').textContent = fixture.localteam_code || '';
             document.getElementById('visitorTeamName').textContent = fixture.visitorteam_name || 'Team 2';
             document.getElementById('visitorTeamCode').textContent = fixture.visitorteam_code || '';
             document.getElementById('fixtureId').textContent = fixture.fixtureID;
+            document.getElementById('startTime').innerHTML = formatMatchTime(fixture.startingAt);
             
-            const startDate = new Date(fixture.startingAt);
-            document.getElementById('startTime').textContent = startDate.toLocaleString();
+            // Update betting state (for when wallet is connected)
+            document.getElementById('localTeamName2').textContent = fixture.localteam_name || 'Team 1';
+            document.getElementById('localTeamCode2').textContent = fixture.localteam_code || '';
+            document.getElementById('visitorTeamName2').textContent = fixture.visitorteam_name || 'Team 2';
+            document.getElementById('visitorTeamCode2').textContent = fixture.visitorteam_code || '';
+            document.getElementById('fixtureId2').textContent = fixture.fixtureID;
+            document.getElementById('startTime2').innerHTML = formatMatchTime(fixture.startingAt);
             
             // Update bet button text
             document.getElementById('localTeamBet').textContent = fixture.localteam_name || 'Team 1';
             document.getElementById('visitorTeamBet').textContent = fixture.visitorteam_name || 'Team 2';
-            
-            matchInfo.classList.remove('hidden');
         }
 
         // Show betting options
         function showBettingOptions() {
-            bettingSection.classList.remove('hidden');
-            
             // Team selection
             betLocalBtn.addEventListener('click', () => selectTeam('local'));
             betVisitorBtn.addEventListener('click', () => selectTeam('visitor'));
