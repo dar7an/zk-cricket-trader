@@ -554,6 +554,29 @@
         .status.success {background:#0c2a17;color:#3ad29f;border-left-color:#3ad29f;border:1px solid #0c2a17;}
         .status.error {background:#2d1415;color:#ff7b7b;border-left-color:#ff7b7b;border:1px solid #2d1415;}
         .status.info {background:#0d1b2a;color:#3b8cff;border-left-color:#3b8cff;border:1px solid #0d1b2a;}
+
+        /* Dark theme cleanup overrides */
+        .teams,
+        .team,
+        .teams-section {
+            background: transparent !important;
+        }
+        .bet-button {
+            background: var(--card-bg) !important;
+        }
+        .bet-button-content {
+            filter: brightness(1.1);
+        }
+        .header h1 {
+            color: var(--text-primary);
+        }
+        .match-title {
+            color: var(--text-primary);
+        }
+        .right-panel > .betting-panel p,
+        .bet-odds {
+            color: var(--text-secondary);
+        }
     </style>
 </head>
 <body>
