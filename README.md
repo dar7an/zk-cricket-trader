@@ -1,11 +1,8 @@
 # Mina zkApp: zkiplbets
 
-Currently, the application stores the next fixture's data and updates its status from an oracle.
+This application is a decentralized betting platform built on the Mina Protocol. It allows users to place bets on sports fixtures in a trustless and transparent manner. The smart contract leverages a Merkle tree to store user bets off-chain, overcoming the on-chain storage limitations of Mina's zkApps.
 
-The smart contract uses 8 state variables which is the maximum limit of a Mina zkApp. The project can be taken forward in two ways:
-
-1. Use of off-chain storage like a Merkle Tree to store user's bet information
-2. Interacting with another zkApp which handles user betting
+The application retrieves fixture data and status updates from a trusted oracle.
 
 ## Prerequisites
 
