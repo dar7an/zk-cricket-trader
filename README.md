@@ -104,12 +104,20 @@ The zkApp verifies these signatures on-chain before accepting any fixture data.
 ## 📁 Project Structure
 
 ```
-src/
-├── Bet.ts           # Main zkApp smart contract
-├── BetStorage.ts    # Off-chain Merkle tree management
-├── structs.ts       # Data structures and types
-├── oracleUtils.ts   # Oracle signature utilities
-└── Bet.test.ts      # Comprehensive test suite
+zk-cricket-trader/
+├── frontend/
+│   ├── index.html       # Web interface for cricket betting
+│   ├── vercel.json      # Frontend deployment configuration
+│   └── .vercelignore    # Frontend deployment exclusions
+├── src/
+│   ├── Bet.ts           # Main zkApp smart contract
+│   ├── BetStorage.ts    # Off-chain Merkle tree management
+│   ├── structs.ts       # Data structures and types
+│   ├── oracleUtils.ts   # Oracle signature utilities
+│   └── Bet.test.ts      # Comprehensive test suite
+├── package.json         # Contract dependencies and scripts
+├── tsconfig.json        # TypeScript configuration
+└── README.md            # This file
 ```
 
 ## 🎯 Usage
@@ -175,6 +183,23 @@ This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENS
 - [SportMonks Oracle](https://github.com/dar7an/sportmonksoracle) - Provides verified cricket fixture data
 - [Mina Protocol](https://minaprotocol.com) - The zero-knowledge blockchain platform
 - [o1js](https://github.com/o1-labs/o1js) - TypeScript framework for zkApps
+
+## 🌐 Frontend Demo
+
+**Live Demo**: [Cricket Trader on Vercel](https://zk-cricket-trader.vercel.app)
+
+The frontend provides a user-friendly interface where anyone can:
+- View live cricket matches from the oracle
+- Place bets on their favorite teams
+- Experience the app without technical knowledge
+
+### Local Frontend Development
+```bash
+# Serve the frontend locally
+cd frontend
+python -m http.server 8000
+# Visit http://localhost:8000
+```
 
 ---
 
