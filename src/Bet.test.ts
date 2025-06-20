@@ -93,23 +93,20 @@ describe('Bet', () => {
     });
 
     describe('actual API requests', () => {
-        // Test 4: Verify the fixture state with actual API requests
+        // Test 4: Verify the fixture state with data coming from the oracle (sample payload)
         it('updates fixture state if the provided signature from the fixture oracle is valid', async () => {
             await localDeploy();
 
             const response = await fetch(
                 'https://sportmonksoracle.vercel.app/fixture'
             );
-            const data = await response.json();
+            const fixturePayload = await response.json();
 
-            const fixtureID = Field(data.data.fixtureID);
-            const localTeamID = Field(data.data.localTeamID);
-            const visitorTeamID = Field(data.data.visitorTeamID);
-            const startingAt = Field(data.data.startingAt);
-            // Using the valid hardcoded signature because the one from the oracle is invalid.
-            const signature = Signature.fromBase58(
-                '7mXEX49AzUUBfARt6XXK1yAaPA2TprEhh3C3C7pLNULL8ifiH7arjUNAJYUNX7qgEEGLKdBxqayg51FzgaTUEYL3kzfFbg6j'
-            );
+            const fixtureID = Field(fixturePayload.data.fixtureID);
+            const localTeamID = Field(fixturePayload.data.localTeamID);
+            const visitorTeamID = Field(fixturePayload.data.visitorTeamID);
+            const startingAt = Field(fixturePayload.data.startingAt);
+            const signature = Signature.fromBase58(fixturePayload.signature);
 
             const txn = await Mina.transaction(senderAccount, async () => {
                 await zkApp.updateFixture(
@@ -126,6 +123,65 @@ describe('Bet', () => {
 
             const fixtureId = zkApp.fixtureId.get();
             expect(fixtureId).toEqual(fixtureID);
+        });
+
+        // Test 5: Verify the status signature coming from the oracle
+        it('verifies the status of a fixture using the oracle provided signature', async () => {
+            await localDeploy();
+
+            // 1. Fetch the fixture information first and store it on-chain
+            const fixtureResponse = await fetch(
+                'https://sportmonksoracle.vercel.app/fixture'
+            );
+            const fixtureData = await fixtureResponse.json();
+
+            const fixtureID = Field(fixtureData.data.fixtureID);
+            const localTeamID = Field(fixtureData.data.localTeamID);
+            const visitorTeamID = Field(fixtureData.data.visitorTeamID);
+            const startingAt = Field(fixtureData.data.startingAt);
+            const fixtureSignature = Signature.fromBase58(fixtureData.signature);
+
+            // Store the fixture on-chain
+            let txn = await Mina.transaction(senderAccount, async () => {
+                await zkApp.updateFixture(
+                    fixtureID,
+                    localTeamID,
+                    visitorTeamID,
+                    startingAt,
+                    fixtureSignature
+                );
+            });
+            await txn.prove();
+            await txn.sign([senderKey]).send();
+
+            // 2. Fetch the status information for the same fixture
+            const statusResponse = await fetch(
+                `https://sportmonksoracle.vercel.app/status/${fixtureData.data.fixtureID}`
+            );
+            const statusData = await statusResponse.json();
+
+            const status = Field(statusData.data.status);
+            const winnerTeamID = Field(statusData.data.winnerTeamID);
+            const statusSignature = Signature.fromBase58(statusData.signature);
+
+            // Call verifyStatus – it won't change state, a successful send means the signature was valid
+            txn = await Mina.transaction(senderAccount, async () => {
+                await zkApp.verifyStatus(
+                    fixtureID,
+                    localTeamID,
+                    visitorTeamID,
+                    startingAt,
+                    status,
+                    winnerTeamID,
+                    statusSignature
+                );
+            });
+
+            await txn.prove();
+            await txn.sign([senderKey]).send();
+
+            // If we got here without throwing, the signature check has passed
+            expect(true).toBe(true);
         });
 
         it('allows a user to place a bet', async () => {
