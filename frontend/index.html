@@ -106,7 +106,7 @@
             background: white;
             border-radius: 8px;
             border: 1px solid #e5e7eb;
-            height: fit-content;
+            height: 100%;
         }
 
         /* Welcome State */
@@ -171,31 +171,28 @@
 
         /* Match Card */
         .match-header {
-            padding: 24px;
-            border-bottom: 1px solid #f3f4f6;
+            padding: 24px 24px 0 24px;
         }
 
         .match-title {
             font-size: 18px;
             font-weight: 600;
             color: #111827;
-            margin-bottom: 8px;
+            margin-bottom: 24px;
         }
 
-        .match-subtitle {
-            font-size: 14px;
-            color: #6b7280;
-        }
-
-        .teams-container {
-            padding: 32px 24px;
+        .teams-section {
+            padding: 24px;
+            border-bottom: 1px solid #f3f4f6;
         }
 
         .teams {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 24px;
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 24px;
         }
 
         .team {
@@ -240,21 +237,17 @@
 
         /* Match Details */
         .match-details {
-            background: #f9fafb;
-            border-radius: 6px;
-            padding: 16px;
-            margin-top: 24px;
+            padding: 24px;
         }
 
         .detail-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 24px;
         }
 
         .detail-item {
-            display: flex;
-            flex-direction: column;
+            text-align: center;
         }
 
         .detail-label {
@@ -263,13 +256,18 @@
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
         }
 
         .detail-value {
-            font-size: 14px;
+            font-size: 16px;
             color: #111827;
-            font-weight: 500;
+            font-weight: 600;
+        }
+
+        .detail-value.time {
+            font-size: 14px;
+            line-height: 1.4;
         }
 
         /* Betting Panel */
@@ -497,10 +495,9 @@
             <div class="left-panel">
                 <div class="match-header">
                     <h2 class="match-title">Upcoming Match</h2>
-                    <p class="match-subtitle">International T20 Cricket</p>
                 </div>
 
-                <div id="matchInfo" class="teams-container">
+                <div class="teams-section">
                     <div class="teams">
                         <div class="team">
                             <div id="localTeamName" class="team-name">Loading...</div>
@@ -515,21 +512,21 @@
                             <div id="visitorTeamCode" class="team-code"></div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="match-details">
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <span class="detail-label">Match ID</span>
-                                <span id="fixtureId" class="detail-value">-</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Status</span>
-                                <span id="matchStatus" class="detail-value">Upcoming</span>
-                            </div>
-                            <div class="detail-item" style="grid-column: 1 / -1;">
-                                <span class="detail-label">Match Time</span>
-                                <span id="startTime" class="detail-value">-</span>
-                            </div>
+                <div class="match-details">
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">Match ID</span>
+                            <span id="fixtureId" class="detail-value">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Status</span>
+                            <span id="matchStatus" class="detail-value">Upcoming</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Match Time</span>
+                            <span id="startTime" class="detail-value time">-</span>
                         </div>
                     </div>
                 </div>
@@ -570,10 +567,9 @@
             <div class="left-panel">
                 <div class="match-header">
                     <h2 class="match-title">Upcoming Match</h2>
-                    <p class="match-subtitle">International T20 Cricket</p>
                 </div>
 
-                <div class="teams-container">
+                <div class="teams-section">
                     <div class="teams">
                         <div class="team">
                             <div id="localTeamName2" class="team-name">Loading...</div>
@@ -588,21 +584,21 @@
                             <div id="visitorTeamCode2" class="team-code"></div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="match-details">
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <span class="detail-label">Match ID</span>
-                                <span id="fixtureId2" class="detail-value">-</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Status</span>
-                                <span id="matchStatus2" class="detail-value">Upcoming</span>
-                            </div>
-                            <div class="detail-item" style="grid-column: 1 / -1;">
-                                <span class="detail-label">Match Time</span>
-                                <span id="startTime2" class="detail-value">-</span>
-                            </div>
+                <div class="match-details">
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">Match ID</span>
+                            <span id="fixtureId2" class="detail-value">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Status</span>
+                            <span id="matchStatus2" class="detail-value">Upcoming</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Match Time</span>
+                            <span id="startTime2" class="detail-value time">-</span>
                         </div>
                     </div>
                 </div>
