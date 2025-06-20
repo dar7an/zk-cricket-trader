@@ -1,4 +1,4 @@
-# Mina zkApp: zkiplbets
+# Mina zkApp: zk-cricket-trader
 
 This application is a decentralized betting platform built on the Mina Protocol. It allows users to place bets on sports fixtures in a trustless and transparent manner. The smart contract leverages a Merkle tree to store user bets off-chain, overcoming the on-chain storage limitations of Mina's zkApps.
 
@@ -153,14 +153,24 @@ const response2 = await fetch('http://localhost:3000/status/59213');
       at Object.<anonymous> (src/Bet.test.ts:143:21)
 
   console.log
-    status:  Field { value: [ 0, [ 0, 1n ] ] }
+    fixtureID:  Field { value: [ 0, [ 0, 59213n ] ] }
 
       at Object.<anonymous> (src/Bet.test.ts:148:21)
 
   console.log
-    winnerTeamID:  Field { value: [ 0, [ 0, 0n ] ] }
+    localTeamID:  Field { value: [ 0, [ 0, 6n ] ] }
 
       at Object.<anonymous> (src/Bet.test.ts:149:21)
+
+  console.log
+    visitorTeamID:  Field { value: [ 0, [ 0, 5n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:150:21)
+
+  console.log
+    startingAt:  Field { value: [ 0, [ 0, 1714744800000n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:151:21)
 
   console.log
     proving...
@@ -218,14 +228,64 @@ const response2 = await fetch('http://localhost:3000/status/59213');
       at Object.<anonymous> (src/Bet.test.ts:235:21)
 
   console.log
-    status:  Field { value: [ 0, [ 0, 1n ] ] }
+    fixtureID:  Field { value: [ 0, [ 0, 59213n ] ] }
 
       at Object.<anonymous> (src/Bet.test.ts:240:21)
 
   console.log
-    winnerTeamID:  Field { value: [ 0, [ 0, 0n ] ] }
+    localTeamID:  Field { value: [ 0, [ 0, 6n ] ] }
 
       at Object.<anonymous> (src/Bet.test.ts:241:21)
+
+  console.log
+    visitorTeamID:  Field { value: [ 0, [ 0, 5n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:242:21)
+
+  console.log
+    startingAt:  Field { value: [ 0, [ 0, 1714744800000n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:243:21)
+
+  console.log
+    proving...
+
+      at Object.<anonymous> (src/Bet.test.ts:268:21)
+
+  console.log
+    fixtureID:  Field { value: [ 0, [ 0, 59213n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:273:21)
+
+  console.log
+    localTeamID:  Field { value: [ 0, [ 0, 6n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:274:21)
+
+  console.log
+    visitorTeamID:  Field { value: [ 0, [ 0, 5n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:275:21)
+
+  console.log
+    startingAt:  Field { value: [ 0, [ 0, 1714744800000n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:276:21)
+
+  console.log
+    proving...
+
+      at Object.<anonymous> (src/Bet.test.ts:294:21)
+
+  console.log
+    status:  Field { value: [ 0, [ 0, 1n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:299:21)
+
+  console.log
+    winnerTeamID:  Field { value: [ 0, [ 0, 0n ] ] }
+
+      at Object.<anonymous> (src/Bet.test.ts:300:21)
 
  PASS  src/Bet.test.ts (6.207 s)
   Bet
