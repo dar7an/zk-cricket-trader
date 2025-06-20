@@ -474,6 +474,56 @@
                 gap: 12px;
             }
         }
+
+        /* --- Perplexity Finance Skin Override --- */
+        :root {
+            --primary: #3B5BFD;
+            --bg: #f7f8fa;
+            --card-bg: #ffffff;
+            --border: #e5e7eb;
+            --text: #1E2430;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        /* Card wrappers */
+        .left-panel,
+        .right-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            box-shadow: none; /* remove elevated shadow */
+        }
+
+        .teams {
+            background: transparent; /* remove previous gray box */
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Data bar under teams */
+        .match-details {
+            background: transparent;
+            padding: 16px 24px 24px 24px;
+        }
+
+        .detail-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        /* Primary buttons */
+        .place-bet-btn,
+        .connect-wallet {
+            background: var(--primary);
+        }
+
+        .place-bet-btn:hover:not(:disabled),
+        .connect-wallet:hover {
+            background: #2642f2;
+        }
     </style>
 </head>
 <body>
