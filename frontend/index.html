@@ -479,55 +479,81 @@
             }
         }
 
-        /* --- Perplexity Finance Skin Override --- */
+        /* === Dark Theme (Perplexity Finance style) === */
         :root {
-            --primary: #3B5BFD;
-            --bg: #f7f8fa;
-            --card-bg: #ffffff;
-            --border: #e5e7eb;
-            --text: #1E2430;
+            --bg: #0e1116;
+            --card-bg: #161b22;
+            --border: #2d333b;
+            --text-primary: #dcdfe4;
+            --text-secondary: #8b949e;
+            --primary: #3b5bfd;
         }
 
         body {
             background: var(--bg);
-            color: var(--text);
+            color: var(--text-primary);
         }
 
-        /* Card wrappers */
+        .header {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+        }
+        .logo-icon {
+            background: var(--primary);
+        }
         .left-panel,
         .right-panel {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            box-shadow: none; /* remove elevated shadow */
         }
-
         .teams {
-            background: transparent; /* remove previous gray box */
-            padding: 16px 0;
             border-bottom: 1px solid var(--border);
         }
-
-        /* Data bar under teams */
+        .vs-line {
+            background: var(--border);
+        }
+        .detail-label {
+            color: var(--text-secondary);
+        }
         .match-details {
-            background: transparent;
-            padding: 16px 24px 24px 24px;
+            border-top: 1px solid var(--border);
         }
-
-        .detail-grid {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+        .footer {
+            color: var(--text-secondary);
         }
-
-        /* Primary buttons */
-        .place-bet-btn,
-        .connect-wallet {
+        /* buttons */
+        .connect-wallet,
+        .place-bet-btn {
             background: var(--primary);
         }
-
-        .place-bet-btn:hover:not(:disabled),
-        .connect-wallet:hover {
-            background: #2642f2;
+        .connect-wallet:hover,
+        .place-bet-btn:hover:not(:disabled) {
+            background: #2944ff;
         }
+        .bet-button {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .bet-button:hover,
+        .bet-button.selected {
+            border-color: var(--primary);
+            background: rgba(59,91,253,0.08);
+            color: var(--primary);
+        }
+        .amount-input {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .amount-input:focus {
+            border-color: var(--primary);
+        }
+        /* status boxes */
+        .status.loading {background:#3d2c00;color:#f1c56b;border-left-color:#f1c56b;border:1px solid #3d2c00;}
+        .status.success {background:#0c2a17;color:#3ad29f;border-left-color:#3ad29f;border:1px solid #0c2a17;}
+        .status.error {background:#2d1415;color:#ff7b7b;border-left-color:#ff7b7b;border:1px solid #2d1415;}
+        .status.info {background:#0d1b2a;color:#3b8cff;border-left-color:#3b8cff;border:1px solid #0d1b2a;}
     </style>
 </head>
 <body>
