@@ -1,328 +1,181 @@
-# Mina zkApp: zk-cricket-trader
+# ZK Cricket Trader
 
-This application is a decentralized betting platform built on the Mina Protocol. It allows users to place bets on sports fixtures in a trustless and transparent manner. The smart contract leverages a Merkle tree to store user bets off-chain, overcoming the on-chain storage limitations of Mina's zkApps.
+A decentralized betting platform built on the Mina Protocol that allows users to place bets on cricket fixtures in a trustless and transparent manner. The smart contract leverages oracle-verified fixture data and uses a Merkle tree to efficiently store user bets off-chain.
 
-The application retrieves fixture data and status updates from a trusted oracle.
+## 🏗️ Architecture
 
-## Prerequisites
+- **zkApp Contract**: Verifies oracle signatures and manages bet state using Merkle trees
+- **Oracle Integration**: Retrieves verified fixture data from [sportmonksoracle](https://github.com/dar7an/sportmonksoracle)
+- **Cryptographic Verification**: All fixture data is cryptographically signed by the oracle before being accepted on-chain
 
-1. For testing the application, you must run the following oracle locally:
-   [`sportsmonksoracle`](https://github.com/dar7an/sportmonksoracle)
+## 🚀 Features
 
-2. Hardcode values for the tests.
+- **Trustless Betting**: Users can place bets on cricket matches with cryptographic proof of fixture integrity
+- **Oracle Verification**: Fixture data and match status are verified through cryptographic signatures
+- **Efficient Storage**: Uses Merkle trees to store unlimited bets off-chain while maintaining on-chain verification
+- **End-to-End Testing**: Comprehensive test suite covering all functionality
 
-## Sample Run
+## 📋 Prerequisites
 
-### Input
+- Node.js (v18 or higher)
+- npm or yarn
+- o1js library
 
-Run the oracle server locally and hardcode the output for Tests 2 and 3 and update the URL of the local server for tests 4 and 5.
+## 🛠️ Installation
 
-For example, response for http://localhost:3000/fixture:
-
+```bash
+git clone https://github.com/dar7an/zk-cricket-trader
+cd zk-cricket-trader
+npm install
 ```
+
+## 🧪 Testing
+
+Run the complete test suite:
+
+```bash
+npm test
+```
+
+The test suite includes:
+- ✅ Contract deployment and initialization
+- ✅ Oracle signature verification (hardcoded data)
+- ✅ Live oracle integration (fixture endpoint)
+- ✅ Live oracle integration (status endpoint)
+- ✅ Bet placement and Merkle tree updates
+
+## 🔗 Oracle Integration
+
+This zkApp integrates with the [SportMonks Oracle](https://github.com/dar7an/sportmonksoracle) which provides:
+
+### Fixture Endpoint
+`GET https://sportmonksoracle.vercel.app/fixture`
+
+Returns the next upcoming cricket fixture with cryptographic signature:
+
+```json
 {
   "data": {
-    "fixtureID": 59213,
-    "localTeamID": 6,
-    "visitorTeamID": 5,
-    "startingAt": 1714744800000,
-    "timestamp": 1714698664432
+    "fixtureID": 66230,
+    "localTeamID": 39,
+    "visitorTeamID": 37,
+    "startingAt": 1752154200000,
+    "localteam_name": "Sri Lanka",
+    "localteam_code": "SL",
+    "visitorteam_name": "Bangladesh",
+    "visitorteam_code": "BGD",
+    "timestamp": 1750443291387
   },
-  "signature": "7mXEX49AzUUBfARt6XXK1yAaPA2TprEhh3C3C7pLNULL8ifiH7arjUNAJYUNX7qgEEGLKdBxqayg51FzgaTUEYL3kzfFbg6j",
+  "signature": "7mXMSfa76SyThnDoASzsBSr1kPLZdYTRwdpn4y3eQS428aX5Aw5WAuuSkbo7zeAoWP2WMVC1xfBa557NQchW5e3P8sgAQX55",
   "publicKey": "B62qp7eyQ9RKwdYBLWNzxmfKntP6dPDrTSQ1ukyYsV4FoTkJH6sfuPU"
 }
 ```
 
-| Variable      | Value                                                                                            |
-| :------------ | :----------------------------------------------------------------------------------------------- |
-| fixtureID     | 59213                                                                                            |
-| localTeamID   | 6                                                                                                |
-| visitorTeamID | 5                                                                                                |
-| startingAt    | 1714744800000                                                                                    |
-| signature     | 7mXEX49AzUUBfARt6XXK1yAaPA2TprEhh3C3C7pLNULL8ifiH7arjUNAJYUNX7qgEEGLKdBxqayg51FzgaTUEYL3kzfFbg6j |
+### Status Endpoint
+`GET https://sportmonksoracle.vercel.app/status/{fixtureID}`
 
-Update the revelant variables:
+Returns the current status of a specific fixture:
 
-```
-const fixtureID = Field(59213);
-            const localTeamID = Field(6);
-            const visitorTeamID = Field(5);
-            const startingAt = Field(1714744800000);
-            const signature = Signature.fromBase58(
-                '7mXEX49AzUUBfARt6XXK1yAaPA2TprEhh3C3C7pLNULL8ifiH7arjUNAJYUNX7qgEEGLKdBxqayg51FzgaTUEYL3kzfFbg6j'
-            );
-```
-
-```
-const response = await fetch('http://localhost:3000/fixture');
-```
-
-For example, response for http://localhost:3000/status/59213
-
-```
+```json
 {
   "data": {
-    "fixtureID": 59213,
+    "fixtureID": 66230,
+    "localTeamID": 39,
+    "visitorTeamID": 37,
+    "startingAt": 1752154200000,
     "status": 1,
     "winnerTeamID": 0,
-    "timestamp": 1714699981382
+    "timestamp": 1750443564321
   },
-  "signature": "7mXHh41LMHw4TvX62BiPzGiyWc8TDL3kGCA5MThNTkmcvBU9e7Du29t1HrD1FUMPkFDbYSKmmUwbjgMjz4z2wJrd41xC1dCj",
+  "signature": "7mXXWXhc35tXAVJdq6Lr2FuW6nkJqGGiZQ2wVWnY7PjTHX8qE57798QB4N96qtZPWWh5jCDt5aeEaM1zf9rgDANap1Jy5nPU",
   "publicKey": "B62qp7eyQ9RKwdYBLWNzxmfKntP6dPDrTSQ1ukyYsV4FoTkJH6sfuPU"
 }
 ```
 
-| Variable     | Value                                                                                            |
-| :----------- | :----------------------------------------------------------------------------------------------- |
-| fixtureID    | 59213                                                                                            |
-| status       | 1                                                                                                |
-| winnerTeamID | 0                                                                                                |
-| signature    | 7mXHh41LMHw4TvX62BiPzGiyWc8TDL3kGCA5MThNTkmcvBU9e7Du29t1HrD1FUMPkFDbYSKmmUwbjgMjz4z2wJrd41xC1dCj |
+## 🔐 Signature Scheme
 
-Update the revelant variables:
+The oracle signs specific field arrays using Schnorr signatures on the Pallas curve:
 
-```
-const fixtureID2 = Field(59213);
-            const status = Field(1);
-            const winnerTeamID = Field(0);
-            const signature2 = Signature.fromBase58(
-                '7mXHh41LMHw4TvX62BiPzGiyWc8TDL3kGCA5MThNTkmcvBU9e7Du29t1HrD1FUMPkFDbYSKmmUwbjgMjz4z2wJrd41xC1dCj'
-            );
-```
+**Fixture Signature**: `[fixtureID, localTeamID, visitorTeamID, startingAt]`
+**Status Signature**: `[fixtureID, localTeamID, visitorTeamID, startingAt, status, winnerTeamID]`
+
+The zkApp verifies these signatures on-chain before accepting any fixture data.
+
+## 📁 Project Structure
 
 ```
-const response2 = await fetch('http://localhost:3000/status/59213');
+src/
+├── Bet.ts           # Main zkApp smart contract
+├── BetStorage.ts    # Off-chain Merkle tree management
+├── structs.ts       # Data structures and types
+├── oracleUtils.ts   # Oracle signature utilities
+└── Bet.test.ts      # Comprehensive test suite
 ```
 
-### Output
+## 🎯 Usage
 
-```
-  console.log
-    proving...
+### Deploy the Contract
 
-      at Object.<anonymous> (src/Bet.test.ts:84:21)
+```typescript
+import { Bet } from './src/Bet.js';
 
-  console.log
-    fixtureID:  Field { value: [ 0, [ 0, 59213n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:89:21)
-
-  console.log
-    localTeamID:  Field { value: [ 0, [ 0, 6n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:90:21)
-
-  console.log
-    visitorTeamID:  Field { value: [ 0, [ 0, 5n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:91:21)
-
-  console.log
-    startingAt:  Field { value: [ 0, [ 0, 1714744800000n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:92:21)
-
-  console.log
-    proving...
-
-      at Object.<anonymous> (src/Bet.test.ts:117:21)
-
-  console.log
-    fixtureID:  Field { value: [ 0, [ 0, 59213n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:122:21)
-
-  console.log
-    localTeamID:  Field { value: [ 0, [ 0, 6n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:123:21)
-
-  console.log
-    visitorTeamID:  Field { value: [ 0, [ 0, 5n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:124:21)
-
-  console.log
-    startingAt:  Field { value: [ 0, [ 0, 1714744800000n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:125:21)
-
-  console.log
-    proving...
-
-      at Object.<anonymous> (src/Bet.test.ts:143:21)
-
-  console.log
-    fixtureID:  Field { value: [ 0, [ 0, 59213n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:148:21)
-
-  console.log
-    localTeamID:  Field { value: [ 0, [ 0, 6n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:149:21)
-
-  console.log
-    visitorTeamID:  Field { value: [ 0, [ 0, 5n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:150:21)
-
-  console.log
-    startingAt:  Field { value: [ 0, [ 0, 1714744800000n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:151:21)
-
-  console.log
-    proving...
-
-      at Object.<anonymous> (src/Bet.test.ts:176:21)
-
-  console.log
-    fixtureID:  Field { value: [ 0, [ 0, 59213n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:181:21)
-
-  console.log
-    localTeamID:  Field { value: [ 0, [ 0, 6n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:182:21)
-
-  console.log
-    visitorTeamID:  Field { value: [ 0, [ 0, 5n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:183:21)
-
-  console.log
-    startingAt:  Field { value: [ 0, [ 0, 1714744800000n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:184:21)
-
-  console.log
-    proving...
-
-      at Object.<anonymous> (src/Bet.test.ts:209:21)
-
-  console.log
-    fixtureID:  Field { value: [ 0, [ 0, 59213n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:214:21)
-
-  console.log
-    localTeamID:  Field { value: [ 0, [ 0, 6n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:215:21)
-
-  console.log
-    visitorTeamID:  Field { value: [ 0, [ 0, 5n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:216:21)
-
-  console.log
-    startingAt:  Field { value: [ 0, [ 0, 1714744800000n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:217:21)
-
-  console.log
-    proving...
-
-      at Object.<anonymous> (src/Bet.test.ts:235:21)
-
-  console.log
-    fixtureID:  Field { value: [ 0, [ 0, 59213n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:240:21)
-
-  console.log
-    localTeamID:  Field { value: [ 0, [ 0, 6n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:241:21)
-
-  console.log
-    visitorTeamID:  Field { value: [ 0, [ 0, 5n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:242:21)
-
-  console.log
-    startingAt:  Field { value: [ 0, [ 0, 1714744800000n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:243:21)
-
-  console.log
-    proving...
-
-      at Object.<anonymous> (src/Bet.test.ts:268:21)
-
-  console.log
-    fixtureID:  Field { value: [ 0, [ 0, 59213n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:273:21)
-
-  console.log
-    localTeamID:  Field { value: [ 0, [ 0, 6n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:274:21)
-
-  console.log
-    visitorTeamID:  Field { value: [ 0, [ 0, 5n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:275:21)
-
-  console.log
-    startingAt:  Field { value: [ 0, [ 0, 1714744800000n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:276:21)
-
-  console.log
-    proving...
-
-      at Object.<anonymous> (src/Bet.test.ts:294:21)
-
-  console.log
-    status:  Field { value: [ 0, [ 0, 1n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:299:21)
-
-  console.log
-    winnerTeamID:  Field { value: [ 0, [ 0, 0n ] ] }
-
-      at Object.<anonymous> (src/Bet.test.ts:300:21)
-
- PASS  src/Bet.test.ts (6.207 s)
-  Bet
-    ✓ generates and deploys the `Bet` smart contract (753 ms)
-    hardcoded values
-      ✓ updates fixture state if the provided signature from the hard coded value is valid (1446 ms)
-      ✓ updates status state if the provided signature from the hard coded value is valid (722 ms)
-    actual API requests
-      ✓ updates fixture state if the provided signature from the fixture oracle is valid (1060 ms)
-      ✓ updates status state if the provided signature from the status oracle is valid (1084 ms)
-
-Test Suites: 1 passed, 1 total
-Tests:       5 passed, 5 total
-Snapshots:   0 total
-Time:        6.243 s, estimated 7 s
-Ran all test suites.
+// Deploy and initialize
+const zkApp = new Bet(zkAppAddress);
+await zkApp.deploy();
 ```
 
-## Build
+### Update Fixture Data
 
-```sh
-npm run build
+```typescript
+// Fetch from oracle
+const response = await fetch('https://sportmonksoracle.vercel.app/fixture');
+const data = await response.json();
+
+// Update on-chain
+await zkApp.updateFixture(
+  Field(data.data.fixtureID),
+  Field(data.data.localTeamID),
+  Field(data.data.visitorTeamID),
+  Field(data.data.startingAt),
+  Signature.fromBase58(data.signature)
+);
 ```
 
-## Run Tests
+### Place a Bet
 
-```sh
-npm run test
-npm run testw # watch mode
+```typescript
+import { BetInfo, BetStorage } from './src/index.js';
+
+const betInfo = new BetInfo({
+  userPublicKey: userPublicKey,
+  teamID: Field(39), // Sri Lanka
+  amount: Field(100)
+});
+
+const betStorage = new BetStorage();
+const witness = betStorage.getWitness(betStorage.nextIndex);
+
+await zkApp.placeBet(betInfo, witness);
 ```
 
-## How to run coverage
+## 🤝 Contributing
 
-```sh
-npm run coverage
-```
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## License
+## 📄 License
 
-[Apache-2.0](LICENSE)
+This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details.
+
+## 🔗 Related Projects
+
+- [SportMonks Oracle](https://github.com/dar7an/sportmonksoracle) - Provides verified cricket fixture data
+- [Mina Protocol](https://minaprotocol.com) - The zero-knowledge blockchain platform
+- [o1js](https://github.com/o1-labs/o1js) - TypeScript framework for zkApps
+
+---
+
+Built with ❤️ on Mina Protocol
